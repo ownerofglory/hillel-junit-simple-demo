@@ -1,0 +1,64 @@
+name: Hillel Maven Demo Pipeline
+
+# when to start the pipeline
+on: [push]
+
+# defining tasks
+jobs:
+  compile:
+    # defining a container image which will be used for teh pipeline
+    runs-on: ubuntu-latest
+    # what to do
+    steps:
+      # copy code from the repo into pipeline container
+      - uses: actions/checkout@v3
+      # set up java environment
+      - name: Set up Maven Central Repository
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+      - name: Compile sources
+        # run needed commands
+        run: mvn --batch-mode clean compile
+
+
+
+  test:
+    # job it waits to finish for
+    needs: compile
+    # defining a container image which will be used for teh pipeline
+    runs-on: ubuntu-latest
+    # what to do
+    steps:
+      # copy code from the repo into pipeline container
+      - uses: actions/checkout@v3
+      # set up java environment
+      - name: Set up Maven Central Repository
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+      - name: Compile sources
+        # run needed commands
+        run: mvn --batch-mode clean test
+
+
+  package:
+    # job it waits to finish for
+    needs: compile
+    # defining a container image which will be used for teh pipeline
+    runs-on: ubuntu-latest
+    # what to do
+    steps:
+      # copy code from the repo into pipeline container
+      - uses: actions/checkout@v3
+      # set up java environment
+      - name: Set up Maven Central Repository
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+      - name: Compile sources
+        # run needed commands
+        run: mvn --batch-mode clean package
